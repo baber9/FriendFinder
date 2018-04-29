@@ -12,8 +12,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // use routing modules for routing
-require('./routing/apiRoutes')(app);
-require('./routing/htmlRoutes')(app);
+// require('./app/routing/apiRoutes')(app);
+require('./app/routing/htmlRoutes')(app);
 
 // listener
 app.listen(PORT, () => {
