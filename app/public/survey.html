@@ -264,37 +264,9 @@
             </div>
         </form>
 
-            <button type="submit" class="btn btn-primary btn-lg" id="submit"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;Submit</button>
+        <button type="submit" class="btn btn-primary btn-lg" id="submit"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;Submit</button>
 
-            
-        </form>
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        <span class="alert alert-danger alert-dismissible" role="alert" id="valid" style="visibility: hidden">All fields are required.</span>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -302,13 +274,79 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 
-    <!-- #name, #photo, #q*... -->
-    <script>
+    <script type="text/javascript">
+        
+        // onclick for submit button
         $("#submit").on("click", (e) => {
+
+            // prevent refresh
             e.preventDefault();
-            console.log(($("input[name=q1]:checked", '#q1').val()), ($("input[name=q3]:checked", '#q3').val()));
+
+            // grab values from text fields
+            var name = $("#name").val().trim();
+            var photo = $("#photo").val().trim();
+            
+            // declare scores arr
+            var scores = [];
+
+            // push radio option values to array
+            for(var i = 1; i < 11; i++) {
+                var thisScore = $(`input[name=q${i}]:checked`, `#q${i}`).val();
+                scores.push(thisScore);
+            }
+            // validate fields and set valid to t/f 
+            var valid = validateFields(name, photo, scores);
+
+            // if valid, create new friend obj
+            if(valid) {
+                // friend obj creation
+                var newFriend = {
+                    name: $("#name").val().trim(),
+                    photo: $("#photo").val().trim(),
+                    scores
+                };
+
+                $.post("/api/friends", newFriend, (data) => {
+
+                    // HANDLE SUBMISSION!!!!!!!!!!!!!!!!!!!!!
+
+                    // hide warning
+                    $("#valid").attr("style", "visibility: hidden");
+
+                });
+
+
+            } else {
+                // show warning
+                $("#valid").attr("style", "visibility: visible");
+                return;
+            }
+
+            console.log(newFriend);
+            
+            
         });
     
+        // FUNCTION to validate fields (make sure all fields are not blank)
+        function validateFields(name, photo, scores) {
+            // var for radio button validation
+            var scoreTest = true;
+
+            // make sure there are no blanks in array, if so, scoreTest = f
+            for (var j = 0; j < 10; j++) {
+                if (!scores[j]) {
+                    scoreTest = false;
+                }
+            }
+            
+            // if all fields are not blank return true
+            if(!name || !photo || !scoreTest) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
     </script>
 </body>
 </html>
