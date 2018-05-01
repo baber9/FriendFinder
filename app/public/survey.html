@@ -282,7 +282,7 @@
             // prevent refresh
             e.preventDefault();
 
-            // grab values from text fields
+            // grab values from form fields
             var name = $("#name").val().trim();
             var photo = $("#photo").val().trim();
             
@@ -292,7 +292,8 @@
             // push radio option values to array
             for(var i = 1; i < 11; i++) {
                 var thisScore = $(`input[name=q${i}]:checked`, `#q${i}`).val();
-                scores.push(thisScore);
+                // convert to int before push
+                scores.push(parseInt(thisScore));
             }
             // validate fields and set valid to t/f 
             var valid = validateFields(name, photo, scores);
@@ -307,13 +308,15 @@
                 };
 
                 $.post("/api/friends", newFriend, (data) => {
-
+                    
                     // HANDLE SUBMISSION!!!!!!!!!!!!!!!!!!!!!
 
                     // hide warning
                     $("#valid").attr("style", "visibility: hidden");
-
                 });
+
+                // clear form fields
+                clearFields();
 
 
             } else {
@@ -322,7 +325,7 @@
                 return;
             }
 
-            console.log(newFriend);
+            // console.log(newFriend);
             
             
         });
@@ -344,6 +347,15 @@
                 return false;
             } else {
                 return true;
+            }
+        }
+
+        // FUNCTON to clear fields (after successful submission)
+        function clearFields() {
+            $("#name").val("");
+            $("#photo").val("");
+            for (i = 1; i < 11; i++) {
+                $(`input[name=q${i}]:checked`, `#q${i}`).prop('checked', false);
             }
         }
 

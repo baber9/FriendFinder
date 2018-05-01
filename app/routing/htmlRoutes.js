@@ -13,7 +13,7 @@ module.exports = (app) => {
 
     // get req for home.html
     app.get('*', (req, res) => {
-        console.log(req.url);
+        // console.log(req.url);
 
         // checks to see if root or 'home' was entered
         if(req.url === "/" || req.url === '/home') {
