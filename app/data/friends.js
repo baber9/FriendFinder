@@ -19,64 +19,64 @@ var friendsArray = [
         "name": "Tina",
         "photo": "http://i197.photobucket.com/albums/aa189/abertime/tina.jpeg",
         "scores": [
-            5,
             1,
-            4,
-            4,
-            5,
-            1,
+            3,
             2,
             5,
+            5,
+            3,
+            1,
             4,
-            1
+            4,
+            2
         ]
     },
     {
         "name": "Jill",
         "photo": "http://i197.photobucket.com/albums/aa189/abertime/jill.jpeg",
         "scores": [
-            5,
-            1,
-            4,
-            4,
-            5,
-            1,
+            3,
             2,
+            1,
             5,
+            5,
+            1,
             4,
-            1
+            2,
+            2,
+            2
         ]
     },
     {
         "name": "John",
         "photo": "http://i197.photobucket.com/albums/aa189/abertime/john.jpeg",
         "scores": [
-            5,
-            1,
-            4,
-            4,
-            5,
-            1,
             2,
-            5,
+            2,
             4,
-            1
+            5,
+            3,
+            1,
+            1,
+            5,
+            5,
+            2
         ]
     },
     {
         "name": "Jason",
         "photo": "http://i197.photobucket.com/albums/aa189/abertime/jason.jpeg",
         "scores": [
-            5,
-            1,
             4,
-            4,
-            5,
+            2,
+            2,
             1,
             2,
-            5,
+            2,
             4,
-            1
+            5,
+            2,
+            5
         ]
     }
         

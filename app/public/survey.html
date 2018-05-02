@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body>
+
     <div class="container">
 
         <div class="jumbotron">
@@ -264,10 +265,37 @@
             </div>
         </form>
 
+        <!-- Submit Form -->
         <button type="submit" class="btn btn-primary btn-lg" id="submit"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;Submit</button>
 
+        <!-- ALL fields are required, default: hidden -->
         <span class="alert alert-danger alert-dismissible" role="alert" id="valid" style="visibility: hidden">All fields are required.</span>
 
+<!-- BEGIN MODAL CODE -->
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myMatch">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h1 class="modal-title" id="myModalLabel">Your New Friend!</h1>
+                </div>
+                <div class="modal-body">
+                    <!-- fields for name, img src, compat for match -->
+                  <h2><div id="matchName"></div></h2>
+                  <img id="matchImage" src="" style="width: 100%">
+                  <h3><div id="matchCompat"></div></h3>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+    <!-- END MODAL CODE -->
+    
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <!-- Latest compiled and minified JavaScript -->
@@ -299,7 +327,7 @@
             var valid = validateFields(name, photo, scores);
 
             // if valid, create new friend obj
-            if(valid) {
+            if (valid) {
                 // friend obj creation
                 var newFriend = {
                     name: $("#name").val().trim(),
@@ -309,14 +337,28 @@
 
                 $.post("/api/friends", newFriend, (data) => {
                     
-                    // HANDLE SUBMISSION!!!!!!!!!!!!!!!!!!!!!
-
                     // hide warning
                     $("#valid").attr("style", "visibility: hidden");
-                });
+                    
+                    // clear form fields
+                    clearFields();
 
-                // clear form fields
-                clearFields();
+                }).done ((data) => {
+
+                    // change modal information with data returned
+                    // name, img attr, compatibility
+                    $("#matchName").text(`Meet ${data[0].name}!`);
+                    $("#matchImage").attr("src", data[0].photo);
+                    $("#matchCompat").text(`You and ${data[0].name} have a compatibility score of ${data[1]}%.`);
+
+                    // show modal
+                    $("#myModal").modal('show');
+
+                    // on hide, go to home page
+                    $("#myModal").on("hidden.bs.modal", () => {
+                        window.location = "/";
+                    });
+                });
 
 
             } else {
@@ -324,10 +366,6 @@
                 $("#valid").attr("style", "visibility: visible");
                 return;
             }
-
-            // console.log(newFriend);
-            
-            
         });
     
         // FUNCTION to validate fields (make sure all fields are not blank)
@@ -341,7 +379,7 @@
                     scoreTest = false;
                 }
             }
-            
+
             // if all fields are not blank return true
             if(!name || !photo || !scoreTest) {
                 return false;
